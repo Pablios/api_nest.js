@@ -1,24 +1,19 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
-import { UsuarioRepository } from "./usuario.repository";
-import { CriaUsuarioDTO } from "./dto/CriaUsuario.dto";
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { CriaUsuarioDTO } from './dto/CriaUsuario.dto';
+import { UsuarioRepository } from './usuario.repository';
 
 @Controller('/usuarios')
 export class UsuarioController {
-	// private usuarioRepository = new UsuarioRepository();
-	constructor(
-		private usuarioRepository: UsuarioRepository
-	) {
+  constructor(private usuarioRepository: UsuarioRepository) {}
 
-	}
+  @Post()
+  async criaUsuario(@Body() dadosDoUsuario: CriaUsuarioDTO) {
+    this.usuarioRepository.salvar(dadosDoUsuario);
+    return dadosDoUsuario;
+  }
 
-	@Post()
-	async criarUsuario(@Body() dados: CriaUsuarioDTO) {
-		this.usuarioRepository.salvar(dados);
-		return dados;
-	}
-
-	@Get()
-	async listaUsuario() {
-		return this.usuarioRepository.listar();
-	}
+  @Get()
+  async listUsuarios() {
+    return this.usuarioRepository.listar();
+  }
 }
